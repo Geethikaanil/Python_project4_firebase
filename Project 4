@@ -1,0 +1,493 @@
+!pip install firebase
+
+Requirement already satisfied: firebase in c:\users\athul\anaconda3\lib\site-packages (3.0.1)
+
+Requirement already satisfied: requests in c:\users\athul\anaconda3\lib\site-packages (from firebase) (2.24.0)
+
+Requirement already satisfied: certifi>=2017.4.17 in c:\users\athul\anaconda3\lib\site-packages (from requests->firebase) (2020.6.20)
+
+Requirement already satisfied: urllib3!=1.25.0,!=1.25.1,<1.26,>=1.21.1 in c:\users\athul\anaconda3\lib\site-packages (from requests->firebase) (1.25.9)
+
+Requirement already satisfied: idna<3,>=2.5 in c:\users\athul\anaconda3\lib\site-packages (from requests->firebase) (2.10)
+
+Requirement already satisfied: chardet<4,>=3.0.2 in c:\users\athul\anaconda3\lib\site-packages (from requests->firebase) (3.0.4)
+
+In [2]:
+
+import firebase_admin
+
+In [3]:
+
+from firebase_admin import credentials
+
+from firebase_admin import firestore
+
+In [4]:
+
+cred = credentials.Certificate("python-project-ce41f-firebase-adminsdk-e8kb8-6d8ac0af3e.json")
+
+firebase_admin.initialize_app(cred)
+
+Out[4]:
+
+<firebase_admin.App at 0x282a3838b80>
+
+In [5]:
+
+db = firestore.client()
+
+In [6]:
+
+doc_ref = db.collection(u'users').document(u'abc')
+
+doc_ref.set({
+
+    u'first': u'Faiza',
+
+    u'last': u'Gokak',
+
+    u'born': 1997
+
+})
+
+Out[6]:
+
+update_time {
+
+  seconds: 1608447535
+
+  nanos: 895100000
+
+}
+
+In [7]:
+
+def enterDataInDB():
+
+    doc_ref = db.collection(u'new').document()
+
+    
+
+    name = input("Enter Name - ")
+
+    lastName = input("Enter Last Name - ")
+
+    age = int(input("Enter Age - "))
+
+    
+
+    dit = {}
+
+    dit["firstName"] = name
+
+    dit["lastName"] = lastName
+
+    dit["age"] = age
+
+    
+
+    doc_ref.set(dit)
+
+In [8]:
+
+enterDataInDB()
+
+Enter Name - axy
+
+Enter Last Name - zz
+
+Enter Age - 13
+
+In [9]:
+
+enterDataInDB()
+
+Enter Name - kiran
+
+Enter Last Name - k
+
+Enter Age - 23
+
+In [10]:
+
+enterDataInDB()
+
+Enter Name - jai
+
+Enter Last Name - lal
+
+Enter Age - 24
+
+In [11]:
+
+enterDataInDB()
+
+Enter Name - abhi
+
+Enter Last Name - pp
+
+Enter Age - 20
+
+In [33]:
+
+docs = db.collection(u'new').stream()
+
+for doc in docs:
+
+    
+
+    print("ID=",doc.id)
+
+    print("First Name=",doc.to_dict().get("firstName"))
+
+    print("Last name =",doc.to_dict().get("lastName"))
+
+    print("Age=",doc.to_dict().get("age"))
+
+    
+
+    print("----------------")
+
+    print("----------------")
+
+ID= 3zBl2oPwqT9Tv8LI6Nud
+
+First Name= kiran
+
+Last name = k
+
+Age= 23
+
+----------------
+
+----------------
+
+ID= 5at5TxPwg4boDarlVcO2
+
+First Name= albin
+
+Last name = jose
+
+Age= 25
+
+----------------
+
+----------------
+
+ID= 5maXV2slut7AtNcQZFUf
+
+First Name= alby
+
+Last name = arun
+
+Age= 25
+
+----------------
+
+----------------
+
+ID= CI3cFkSH86dsOC5V5gXw
+
+First Name= ajin
+
+Last name = arju
+
+Age= 21
+
+----------------
+
+----------------
+
+ID= JIcm1DKi0PQkHnOt7mv1
+
+First Name= abhi
+
+Last name = pp
+
+Age= 20
+
+----------------
+
+----------------
+
+ID= cNz4toVpQpGMk2LxH3R7
+
+First Name= jai
+
+Last name = lal
+
+Age= 28
+
+----------------
+
+----------------
+
+ID= wrSSvLUlCO3V2LHaQgH5
+
+First Name= arjith
+
+Last name = singh
+
+Age= 26
+
+----------------
+
+----------------
+
+In [21]:
+
+def update(newid,updatedage):
+
+     doc_ref = db.collection(u'new').document(newid)
+
+    
+
+     doc_ref.update({"age":updatedage})
+
+In [23]:
+
+update("FqKY5wXsQI2UX5yjm71K",30)
+
+In [24]:
+
+update("cNz4toVpQpGMk2LxH3R7",28)
+
+In [25]:
+
+enterDataInDB()
+
+Enter Name - ajin
+
+Enter Last Name - arju
+
+Enter Age - 21
+
+In [26]:
+
+enterDataInDB()
+
+Enter Name - albin
+
+Enter Last Name - jose
+
+Enter Age - 25
+
+In [27]:
+
+enterDataInDB()
+
+Enter Name - arjith
+
+Enter Last Name - singh
+
+Enter Age - 26
+
+In [28]:
+
+enterDataInDB()
+
+Enter Name - alby
+
+Enter Last Name - arun
+
+Enter Age - 25
+
+In [30]:
+
+def delete(uid):
+
+    db.collection(u'new').document(uid).delete()
+
+In [31]:
+
+delete("FqKY5wXsQI2UX5yjm71K")
+
+In [34]:
+
+enterDataInDB()
+
+Enter Name - sebastian
+
+Enter Last Name - sebu
+
+Enter Age - 34
+
+In [35]:
+
+enterDataInDB()
+
+Enter Name - rahul
+
+Enter Last Name - ram
+
+Enter Age - 27
+
+In [36]:
+
+enterDataInDB()
+
+Enter Name - jithin
+
+Enter Last Name - ashok
+
+Enter Age - 17
+
+In [37]:
+
+enterDataInDB()
+
+Enter Name - nikhil
+
+Enter Last Name - raj
+
+Enter Age - 29
+
+In [38]:
+
+update("wrSSvLUlCO3V2LHaQgH5",30)
+
+In [39]:
+
+delete("JIcm1DKi0PQkHnOt7mv1")
+
+In [40]:
+
+docs = db.collection(u'new').stream()
+
+for doc in docs:
+
+    
+
+    print("ID=",doc.id)
+
+    print("First Name=",doc.to_dict().get("firstName"))
+
+    print("Last name =",doc.to_dict().get("lastName"))
+
+    print("Age=",doc.to_dict().get("age"))
+
+    
+
+    print("----------------")
+
+    print("----------------")
+
+ID= 2bIAvTW20Stw4reXAUBq
+
+First Name= rahul
+
+Last name = ram
+
+Age= 27
+
+----------------
+
+----------------
+
+ID= 3zBl2oPwqT9Tv8LI6Nud
+
+First Name= kiran
+
+Last name = k
+
+Age= 23
+
+----------------
+
+----------------
+
+ID= 5at5TxPwg4boDarlVcO2
+
+First Name= albin
+
+Last name = jose
+
+Age= 25
+
+----------------
+
+----------------
+
+ID= 5maXV2slut7AtNcQZFUf
+
+First Name= alby
+
+Last name = arun
+
+Age= 25
+
+----------------
+
+----------------
+
+ID= CI3cFkSH86dsOC5V5gXw
+
+First Name= ajin
+
+Last name = arju
+
+Age= 21
+
+----------------
+
+----------------
+
+ID= RwZT61jElOzA5aqhJhCc
+
+First Name= nikhil
+
+Last name = raj
+
+Age= 29
+
+----------------
+
+----------------
+
+ID= UE1kTHDteuXSeDDBTo07
+
+First Name= sebastian
+
+Last name = sebu
+
+Age= 34
+
+----------------
+
+----------------
+
+ID= cNz4toVpQpGMk2LxH3R7
+
+First Name= jai
+
+Last name = lal
+
+Age= 28
+
+----------------
+
+----------------
+
+ID= sBeinezSaHdWrFkYjdNr
+
+First Name= jithin
+
+Last name = ashok
+
+Age= 17
+
+----------------
+
+----------------
+
+ID= wrSSvLUlCO3V2LHaQgH5
+
+First Name= arjith
+
+Last name = singh
+
+Age= 30
+
+----------------
+
+----------------
